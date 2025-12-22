@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kody — Developer & Artist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray: #666;
+            --light-gray: #e8e8e8;
+            --accent-blue: #0066ff;
+            --accent-pink: #ff3366;
+            --accent-yellow: #ffcc00;
+            --accent-green: #00cc88;
+            --accent-purple: #9933ff;
+
+            /* Anthropic-style font system */
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            --font-ui: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            --font-ui-serif: Georgia, 'Times New Roman', Times, serif;
+            --font-system: system-ui, sans-serif;
+        }
+
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: var(--font-ui);
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-display {
+            font-family: var(--font-ui-serif);
+            font-weight: 330;
+            line-height: 1.2;
+            font-variation-settings: "opsz" 48;
+        }
+
+        /* Color utilities */
+        .text-blue { color: var(--accent-blue); }
+        .text-pink { color: var(--accent-pink); }
+        .text-yellow { color: var(--accent-yellow); }
+        .text-green { color: var(--accent-green); }
+        .text-purple { color: var(--accent-purple); }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: var(--white);
+            border-bottom: 3px solid var(--black);
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--accent-blue);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10rem 4rem 6rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--black);
+            padding: 0.5rem 1rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .hero-title {
+            font-family: var(--font-ui-serif);
+            font-size: clamp(3rem, 8vw + 1rem, 8rem);
+            font-weight: 330;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            font-variation-settings: "opsz" 48;
+            animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-description {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            max-width: 700px;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+
+        .hero-roles {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .role-tag {
+            padding: 1rem 2rem;
+            border: 3px solid var(--black);
+            font-family: var(--font-ui);
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+
+        .role-tag:nth-child(1) { 
+            animation: fadeIn 0.6s ease 0.5s backwards;
+        }
+        .role-tag:nth-child(2) { 
+            animation: fadeIn 0.6s ease 0.6s backwards;
+        }
+        .role-tag:nth-child(3) { 
+            animation: fadeIn 0.6s ease 0.7s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .role-tag:hover {
+            transform: translateY(-5px);
+        }
+
+        .role-tag.blue {
+            background: var(--accent-blue);
+            color: var(--white);
+            border-color: var(--accent-blue);
+        }
+
+        .role-tag.blue:hover {
+            box-shadow: 8px 8px 0 rgba(0, 102, 255, 0.3);
+        }
+
+        .role-tag.pink {
+            background: var(--accent-pink);
+            color: var(--white);
+            border-color: var(--accent-pink);
+        }
+
+        .role-tag.pink:hover {
+            box-shadow: 8px 8px 0 rgba(255, 51, 102, 0.3);
+        }
+
+        .role-tag.green {
+            background: var(--accent-green);
+            color: var(--white);
+            border-color: var(--accent-green);
+        }
+
+        .role-tag.green:hover {
+            box-shadow: 8px 8px 0 rgba(0, 204, 136, 0.3);
+        }
+
+        /* Color blocks decoration */
+        .color-blocks {
+            position: fixed;
+            top: 50%;
+            right: 4rem;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .color-block {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--black);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .color-block:hover {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .color-block.blue { background: var(--accent-blue); }
+        .color-block.pink { background: var(--accent-pink); }
+        .color-block.green { background: var(--accent-green); }
+
+        /* Section Headers */
+        .section-header {
+            padding: 8rem 4rem 4rem;
+            border-top: 3px solid var(--black);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-number {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--font-ui-serif);
+            font-size: clamp(2.5rem, 6vw + 0.5rem, 6rem);
+            font-weight: 330;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            font-variation-settings: "opsz" 48;
+        }
+
+        /* Projects Grid */
+        .projects {
+            padding: 0 4rem 8rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project {
+            border: 3px solid var(--black);
+            padding: 0;
+            background: var(--white);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .project.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-blue);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 0;
+        }
+
+        .project.game::before {
+            background: var(--accent-pink);
+        }
+
+        .project.art::before {
+            background: var(--accent-green);
+        }
+
+        .project:hover::before {
+            transform: translateX(0);
+        }
+
+        .project:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-content {
+            padding: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-number {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .project:hover .project-number {
+            color: var(--white);
+        }
+
+        .project-name {
+            font-family: var(--font-ui-serif);
+            font-size: clamp(1.875rem, 1.2rem + 2vw, 2.5rem);
+            font-weight: 330;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+            transition: color 0.3s;
+            line-height: 1.2;
+            font-variation-settings: "opsz" 48;
+        }
+
+        .project:hover .project-name {
+            color: var(--white);
+        }
+
+        .project-description {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+
+        .project:hover .project-description {
+            color: var(--white);
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-pill {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--black);
+            background: var(--white);
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .project.web .tech-pill {
+            background: var(--accent-blue);
+            color: var(--white);
+            border-color: var(--accent-blue);
+        }
+
+        .project.game .tech-pill {
+            background: var(--accent-pink);
+            color: var(--white);
+            border-color: var(--accent-pink);
+        }
+
+        .project.art .tech-pill {
+            background: var(--accent-green);
+            color: var(--white);
+            border-color: var(--accent-green);
+        }
+
+        .project:hover .tech-pill {
+            border-color: var(--white);
+            background: transparent;
+            color: var(--white);
+        }
+
+        .project-link {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--black);
+            border-bottom: 3px solid var(--black);
+            padding-bottom: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .project:hover .project-link {
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        /* Skills Section */
+        .skills {
+            background: var(--black);
+            color: var(--white);
+            padding: 8rem 4rem;
+        }
+
+        .skills-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .skills-header {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .skills-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skills-header .section-number {
+            color: var(--gray);
+        }
+
+        .skills-header .section-title {
+            color: var(--white);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+        }
+
+        .skill-category {
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .skill-category.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-category:nth-child(2) {
+            border-color: var(--accent-pink);
+            transition-delay: 0.2s;
+        }
+
+        .skill-category:nth-child(3) {
+            border-color: var(--accent-green);
+            transition-delay: 0.4s;
+        }
+
+        .skill-category-title {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-list li:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 4rem;
+            background: var(--white);
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .about-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.5;
+            font-weight: 500;
+            margin-bottom: 3rem;
+        }
+
+        .about-text strong {
+            font-weight: 700;
+            position: relative;
+        }
+
+        .about-text .highlight-blue {
+            color: var(--accent-blue);
+        }
+
+        .about-text .highlight-pink {
+            color: var(--accent-pink);
+        }
+
+        .about-text .highlight-green {
+            background: var(--accent-green);
+            padding: 0 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 4rem;
+            background: var(--light-gray);
+        }
+
+        .contact-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .contact-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .contact-title {
+            font-family: var(--font-ui-serif);
+            font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+            font-weight: 330;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            font-variation-settings: "opsz" 48;
+        }
+
+        .contact-description {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            border: 3px solid var(--black);
+            background: var(--white);
+            color: var(--black);
+            text-decoration: none;
+            font-family: var(--font-ui);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .contact-button:hover {
+            transform: translateX(10px);
+            box-shadow: -10px 10px 0 var(--black);
+        }
+
+        .contact-button.primary {
+            background: var(--accent-blue);
+            color: var(--white);
+        }
+
+        .contact-button.secondary {
+            background: var(--accent-pink);
+            color: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 4rem;
+            text-align: center;
+            border-top: 3px solid var(--white);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .hero {
+                padding: 7rem 2rem 4rem;
+            }
+
+            .section-header,
+            .projects,
+            .skills,
+            .about,
+            .contact {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            .projects-grid,
+            .skills-grid,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .color-blocks {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 10vw, 5rem);
+            }
+
+            .section-title {
+                font-size: clamp(2rem, 8vw, 4rem);
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero-label {
+                margin-bottom: 1rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 12vw, 3.5rem);
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .hero-roles {
+                flex-direction: column;
+            }
+
+            .role-tag {
+                text-align: center;
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">KODY</div>
+        <ul class="nav-links">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Decorative color blocks - click to navigate -->
+    <div class="color-blocks">
+        <div class="color-block blue" onclick="scrollToSection('projects')" title="Projects"></div>
+        <div class="color-block pink" onclick="scrollToSection('skills')" title="Skills"></div>
+        <div class="color-block green" onclick="scrollToSection('contact')" title="Contact"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-label">Portfolio 2025</span>
+            <h1 class="hero-title">Kody <span class="text-blue">Gentry</span></h1>
+            <p class="hero-description">
+                <span class="text-blue">Software engineer</span> and <span class="text-pink">game developer</span> crafting interactive experiences,
+                useful tools, and creative projects. <span class="text-green">Turning ideas into reality.</span>
+            </p>
+            <div class="hero-roles">
+                <div class="role-tag blue">Software Engineer</div>
+                <div class="role-tag pink">Game Developer</div>
+                <div class="role-tag green">Creator</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <div class="section-header" id="projects">
+        <div class="section-number">01 / SELECTED WORK</div>
+        <h2 class="section-title">Projects</h2>
+    </div>
+
+    <section class="projects">
+        <div class="projects-grid">
+            <!-- txt.gallery -->
+            <div class="project web">
+                <div class="project-content">
+                    <div class="project-number">WEB / 01</div>
+                    <h3 class="project-name">txt.gallery</h3>
+                    <p class="project-description">
+                        A minimalist web application for creating and sharing
+                        text-based art and ASCII creations. Clean, modern interface
+                        with a focus on creative expression.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">JavaScript</span>
+                        <span class="tech-pill">HTML/CSS</span>
+                        <span class="tech-pill">Vercel</span>
+                    </div>
+                    <a href="https://txt-gallery.vercel.app/" class="project-link" target="_blank">View Live →</a>
+                </div>
+            </div>
+
+            <!-- Midnight Slice Demo -->
+            <div class="project game">
+                <div class="project-content">
+                    <div class="project-number">GAME / 01</div>
+                    <h3 class="project-name">Midnight Slice</h3>
+                    <p class="project-description">
+                        A stylized game demo published under Chum Studios.
+                        Features unique gameplay mechanics and atmospheric design
+                        crafted in Godot Engine.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">GDScript</span>
+                        <span class="tech-pill">Game Design</span>
+                    </div>
+                    <a href="https://chumstudios.itch.io/midnight-slice-demo" class="project-link" target="_blank">Play Demo →</a>
+                </div>
+            </div>
+
+            <!-- Godot Dot Shader -->
+            <div class="project art">
+                <div class="project-content">
+                    <div class="project-number">TOOL / 01</div>
+                    <h3 class="project-name">Godot Dot Shader</h3>
+                    <p class="project-description">
+                        A custom shader for Godot Engine that creates stylized
+                        dot/halftone visual effects. Includes a YouTube tutorial
+                        walking through the implementation.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">Shaders</span>
+                        <span class="tech-pill">GLSL</span>
+                    </div>
+                    <a href="https://youtu.be/Uou0grxS5SY?si=VRV1Mv7l44atXEcE" class="project-link" target="_blank">Watch Tutorial →</a>
+                </div>
+            </div>
+
+            <!-- Marvel Rivals Discord Bot -->
+            <div class="project web">
+                <div class="project-content">
+                    <div class="project-number">WEB / 02</div>
+                    <h3 class="project-name">Marvel Rivals Stat Bot</h3>
+                    <p class="project-description">
+                        A Discord bot that fetches and displays player statistics
+                        for Marvel Rivals. Integrates with game APIs to provide
+                        real-time stat tracking for Discord communities.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">Discord.py</span>
+                        <span class="tech-pill">API Integration</span>
+                    </div>
+                    <a href="https://github.com/kog-ko/Marvel-Rivals-Discord-Stat-Bot" class="project-link" target="_blank">View Source →</a>
+                </div>
+            </div>
+
+            <!-- Eternal Burn -->
+            <div class="project game">
+                <div class="project-content">
+                    <div class="project-number">GAME / 02</div>
+                    <h3 class="project-name">Eternal Burn</h3>
+                    <p class="project-description">
+                        Another game project from Chum Studios featuring
+                        engaging gameplay and polished visuals. Built with
+                        a focus on player experience and replayability.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">GDScript</span>
+                        <span class="tech-pill">Game Design</span>
+                    </div>
+                    <a href="https://chumstudios.itch.io/eternal-burn" class="project-link" target="_blank">Play Game →</a>
+                </div>
+            </div>
+
+            <!-- SimpleAPI -->
+            <div class="project web">
+                <div class="project-content">
+                    <div class="project-number">WEB / 03</div>
+                    <h3 class="project-name">SimpleAPI</h3>
+                    <p class="project-description">
+                        A lightweight, easy-to-use API framework designed for
+                        rapid development and prototyping. Simplifies common
+                        backend patterns for faster project setup.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">Flask</span>
+                        <span class="tech-pill">REST API</span>
+                    </div>
+                    <a href="https://github.com/kog-ko/SimpleAPI" class="project-link" target="_blank">View Source →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="skills-content">
+            <div class="skills-header">
+                <div class="section-number">02 / EXPERTISE</div>
+                <h2 class="section-title">Skills</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Game Development</h3>
+                    <ul class="skill-list">
+                        <li>Godot Engine</li>
+                        <li>GDScript</li>
+                        <li>Shader Programming</li>
+                        <li>Game Design</li>
+                        <li>Level Design</li>
+                        <li>2D/3D Graphics</li>
+                        <li>Animation</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Web Development</h3>
+                    <ul class="skill-list">
+                        <li>JavaScript</li>
+                        <li>HTML / CSS</li>
+                        <li>Python (Flask/Django)</li>
+                        <li>REST APIs</li>
+                        <li>PostgreSQL</li>
+                        <li>Vercel / AWS</li>
+                        <li>Discord.py</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title">General</h3>
+                    <ul class="skill-list">
+                        <li>Java</li>
+                        <li>C++ / C</li>
+                        <li>SQL</li>
+                        <li>Git</li>
+                        <li>Linux</li>
+                        <li>CI/CD</li>
+                        <li>Spring Boot</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <div class="section-number">03 / BACKGROUND</div>
+            <div class="about-text">
+                I'm a <strong class="highlight-blue">software engineer</strong> and
+                <strong class="highlight-pink">game developer</strong> with a B.S. in Computer Science
+                from Texas State University. I love building things that are
+                <strong class="highlight-green">useful, fun, or both</strong> —
+                whether that's games, web apps, bots, or creative tools.
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-content">
+            <div>
+                <div class="section-number">04 / GET IN TOUCH</div>
+                <h2 class="contact-title">Let's connect</h2>
+                <p class="contact-description">
+                    Interested in collaboration, have a project idea, or just want to chat?
+                    Feel free to reach out through any of these channels.
+                </p>
+            </div>
+            <div class="contact-links">
+                <button onclick="copyEmail()" class="contact-button primary" id="email-btn">Copy Email</button>
+                <a href="static/Kody Gentry Resume 2026.pdf" class="contact-button secondary" target="_blank">View Resume</a>
+                <a href="https://github.com/kog-ko" class="contact-button" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/kodygentry/" class="contact-button" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Kody Gentry. Designed & developed with care.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Copy email to clipboard
+        function copyEmail() {
+            const email = 'kodygentry3737@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                const btn = document.getElementById('email-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied to Clipboard!';
+                btn.style.background = 'var(--accent-green)';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'var(--accent-blue)';
+                }, 2000);
+            });
+        }
+
+        // Color block navigation
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Simple, subtle scroll animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -10% 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe section headers
+        document.querySelectorAll('.section-header').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Observe projects with staggered timing
+        const projects = document.querySelectorAll('.project');
+        projects.forEach((project, index) => {
+            project.style.transitionDelay = `${index * 0.1}s`;
+            observer.observe(project);
+        });
+
+        // Observe skills categories
+        document.querySelectorAll('.skill-category').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Observe skills header
+        const skillsHeader = document.querySelector('.skills-header');
+        if (skillsHeader) {
+            observer.observe(skillsHeader);
+        }
+
+        // Observe about section
+        const aboutContent = document.querySelector('.about-content');
+        if (aboutContent) {
+            observer.observe(aboutContent);
+        }
+
+        // Observe contact section
+        const contactContent = document.querySelector('.contact-content');
+        if (contactContent) {
+            observer.observe(contactContent);
+        }
+    </script>
+</body>
+</html>
