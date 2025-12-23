@@ -597,9 +597,28 @@
             padding: 0 0.5rem;
         }
 
+        .about-text .highlight-yellow {
+            background: var(--accent-yellow);
+            color: var(--black);
+            padding: 0.1rem 0.5rem;
+            font-weight: 600;
+        }
+
         .about-text .outline-pink {
             background: var(--accent-pink);
             padding: 0 0.5rem;
+        }
+
+        .chum-link {
+            color: var(--accent-pink);
+            text-decoration: none;
+            border-bottom: 2px solid var(--accent-pink);
+            transition: all 0.3s;
+        }
+
+        .chum-link:hover {
+            background: var(--accent-pink);
+            color: var(--white);
         }
 
         /* Contact Section */
@@ -701,7 +720,7 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1280px) {
             nav {
                 padding: 1.5rem 2rem;
             }
@@ -724,7 +743,51 @@
                 gap: 1.5rem;
             }
 
-            .skills-grid,
+            .project {
+                aspect-ratio: 1;
+            }
+
+            .project-content {
+                padding: 1.5rem;
+            }
+
+            .project-name {
+                font-size: 1.2rem;
+            }
+
+            .project-number {
+                font-size: 0.7rem;
+            }
+
+            .tech-pill {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .project-link {
+                font-size: 0.75rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+
+            .skill-category {
+                padding-left: 1rem;
+                border-left-width: 3px;
+            }
+
+            .skill-category-title {
+                font-size: 0.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .skill-list li {
+                font-size: 0.85rem;
+                margin-bottom: 0.5rem;
+            }
+
             .contact-content {
                 grid-template-columns: 1fr;
                 gap: 3rem;
@@ -813,16 +876,15 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <span class="hero-label">Portfolio 2026</span>
+            <span class="hero-label">Texas, USA</span>
             <h1 class="hero-title">Kody <span class="text-blue">Gentry</span></h1>
             <p class="hero-description">
-                <span class="text-blue">Software engineer</span> and <span class="text-pink">game developer</span> crafting interactive experiences,
-                useful tools, and creative projects. <span class="text-green">Turning ideas into reality.</span>
+                I build <span class="text-pink">games</span>, <span class="text-blue">tools</span>, and whatever else sounds fun.
             </p>
             <div class="hero-roles">
                 <div class="role-tag blue">Software Engineer</div>
-                <div class="role-tag pink">Game Developer</div>
-                <div class="role-tag green">Creator</div>
+                <div class="role-tag pink">Game Dev</div>
+                <div class="role-tag green">Tinkerer</div>
             </div>
         </div>
     </section>
@@ -1002,15 +1064,15 @@
     <!-- About Section -->
     <section class="about" id="about">
         <div class="about-content">
-            <div class="section-number">03 / BACKGROUND</div>
+            <div class="section-number">03 / WHO I AM</div>
             <div class="about-text">
-                I'm a <strong class="highlight-blue">software engineer</strong> and
-                <strong class="highlight-pink">game developer</strong> with a B.S. in Computer Science
-                from Texas State University. <br>
-                I love creating things that are
-                <strong class="highlight-green" style="color: var(--white);">interesting, <br>fun, and weird.</strong> <br><br>
-                Founder of <strong style="color: var(--white);"><a href="https://chumstudios.itch.io/" target="_blank" style="color: var(--accent-pink); text-decoration: underline;">Chum Studios</a></strong>,
-                a small indie game studio focused on unique and engaging experiences.
+                <strong class="highlight-blue">Engineer</strong> by trade,
+                <strong class="highlight-pink">game maker</strong> by passion.
+                Texas State CS grad with a thing for building
+                <span class="highlight-yellow">weird, fun stuff</span> that probably didn't need to exist—but I'm glad it does.
+            </div>
+            <div class="about-text" style="margin-top: 2rem; font-size: 0.8em; color: var(--gray);">
+                Running <a href="https://chumstudios.itch.io/" target="_blank" class="chum-link">Chum Studios</a> — shipping indie games nobody asked for, one demo at a time.
             </div>
         </div>
     </section>
