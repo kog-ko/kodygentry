@@ -312,8 +312,8 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -719,11 +719,19 @@
                 padding-right: 2rem;
             }
 
-            .projects-grid,
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+
             .skills-grid,
             .contact-content {
                 grid-template-columns: 1fr;
                 gap: 3rem;
+            }
+
+            .project-description {
+                display: none;
             }
 
             .color-blocks {
@@ -775,6 +783,10 @@
             .role-tag {
                 text-align: center;
                 padding: 0.75rem 1.5rem;
+            }
+
+            .project-description {
+                display: none;
             }
         }
     </style>
