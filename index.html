@@ -168,6 +168,10 @@
             border: 3px solid var(--black);
         }
 
+        .mobile-break {
+            display: none;
+        }
+
         .hero-label {
             font-family: var(--font-mono);
             font-size: 0.8rem;
@@ -772,7 +776,11 @@
             }
 
             .hero-anim {
-                width: 80px;
+                width: 120px;
+            }
+
+            .mobile-break {
+                display: block;
             }
 
             .section-header,
@@ -936,7 +944,7 @@
             }
 
             .hero-anim {
-                width: 60px;
+                width: 90px;
             }
 
             .projects-grid {
@@ -1058,7 +1066,7 @@
         <div class="hero-content">
             <div class="hero-text">
                 <span class="hero-label">Texas, USA</span>
-                <h1 class="hero-title">Kody <span class="text-blue">Gentry</span></h1>
+                <h1 class="hero-title">Kody <br class="mobile-break"><span class="text-blue">Gentry</span></h1>
                 <p class="hero-description">
                     <span class="text-blue">Software engineer</span> who builds <span class="text-pink">games</span>, software, and weird side projects.
                 </p>
