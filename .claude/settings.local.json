@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app:*)",
+      "Bash(npx create-next-app@latest video-converter --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --use-npm --no-turbopack)",
+      "Bash(printf:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(yes:*)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(python -m http.server:*)"
+    ]
+  }
+}
