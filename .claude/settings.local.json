@@ -11,7 +11,16 @@
       "Bash(npx kill-port:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run build:*)",
-      "Bash(python -m http.server:*)"
+      "Bash(python -m http.server:*)",
+      "Bash(flutter:*)",
+      "Bash(cmd /c \"flutter pub get\")",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\mobile_apps\\\\gymchum && flutter pub get 2>&1\")",
+      "Bash(powershell -Command \"cd ''C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\mobile_apps\\\\gymchum''; flutter pub get\")",
+      "Bash(powershell -Command:*)",
+      "Bash(adb shell input text:*)",
+      "Bash(cmd /c \"C:\\\\Users\\\\kodyg\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe shell settings put global captive_portal_detection_enabled 0\")",
+      "Bash(cmd /c \"C:\\\\Users\\\\kodyg\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe reboot\")",
+      "Bash(cmd /c \"C:\\\\Users\\\\kodyg\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe -list-avds\")"
     ]
   }
 }
