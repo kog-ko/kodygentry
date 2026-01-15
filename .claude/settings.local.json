@@ -31,7 +31,26 @@
       "Bash(firebase use:*)",
       "Bash(firebase deploy:*)",
       "Bash(dir:*)",
-      "Bash(cmd /c \"del \\\\?\\\\C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\kodygentry\\\\nul\")"
+      "Bash(cmd /c \"del \\\\?\\\\C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\kodygentry\\\\nul\")",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\mobile_apps\\\\gymchum && flutter build web 2>&1\")",
+      "Bash(where:*)",
+      "Bash(cmd /c \"where /R C:\\\\Users\\\\kodyg flutter.bat 2>nul | head -1\")",
+      "Bash(cmd /c \"dir /s /b C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\flutter.bat 2>nul | findstr flutter.bat\")",
+      "Bash(tr:*)",
+      "Bash(cmd /c \"fvm flutter build web\")",
+      "Bash(C:/Users/kodyg/AppData/Local/Programs/flutter/bin/flutter.bat --version)",
+      "Bash(C:/flutter/bin/flutter.bat build:*)",
+      "Bash(firebase --version:*)",
+      "Bash(cmd.exe /c \"flutter --version\")",
+      "Bash(C:/Users/kodyg/flutter/bin/flutter.bat build web)",
+      "Bash(C:/flutter/bin/flutter.bat analyze:*)",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\mobile_apps\\\\gymchum && flutter analyze --no-pub 2>&1\")",
+      "Bash(cmd /c \"dir /s /b C:\\\\flutter\\\\bin\\\\flutter.bat 2>nul\")",
+      "Bash(cmd /c \"if exist C:\\\\Users\\\\kodyg\\\\fvm\\\\default\\\\bin\\\\flutter.bat echo found fvm\")",
+      "Bash(cmd /c \"if exist C:\\\\Users\\\\kodyg\\\\flutter\\\\bin\\\\flutter.bat echo found user flutter\")",
+      "Bash(cmd /c \"dir /s /b C:\\\\Users\\\\kodyg\\\\OneDrive\\\\Desktop\\\\o\\\\scripts\\\\mobile_apps\\\\gymchum\\\\test 2>nul || echo test folder not found\")",
+      "Bash(cmd /c \"C:\\\\Users\\\\kodyg\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe shell settings put global captive_portal_https_url https://www.google.com/generate_204\")",
+      "Bash(cmd /c \"C:\\\\Users\\\\kodyg\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe shell settings put global captive_portal_http_url http://www.google.com/generate_204\")"
     ]
   }
 }
