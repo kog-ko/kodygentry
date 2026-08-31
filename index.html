@@ -19,14 +19,14 @@
         :root {
             --bg-primary: #222222;
             --bg-secondary: #1a1a1a;
-            --bg-tertiary: #2a2a2a;
             --bg-card: #2d2d2d;
-            --white: #fafafa;
             --text-primary: #e8e8e8;
-            --text-secondary: #888;
+            --text-body: #999;
+            --text-nav: #888;
+            --text-eyebrow: #666;
             --text-muted: #555;
             --border-color: #3a3a3a;
-            --border-light: #444;
+            --border-light: #555;
             --accent-blue: #4d9fff;
             --accent-pink: #ff5c8d;
             --accent-yellow: #ffd54f;
@@ -34,7 +34,6 @@
             --accent-purple: #b388ff;
             --accent-orange: #ff8a65;
 
-            /* Font system */
             --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
             --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
             --font-display: 'DM Serif Display', Georgia, serif;
@@ -42,13 +41,8 @@
 
         html {
             line-height: 1.5;
-            -webkit-text-size-adjust: 100%;
-            -moz-tab-size: 4;
-            tab-size: 4;
             font-family: var(--font-ui);
-            font-feature-settings: normal;
-            font-variation-settings: normal;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -57,370 +51,231 @@
             color: var(--text-primary);
             line-height: 1.5;
             overflow-x: hidden;
+            position: relative;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            position: relative;
         }
 
-        /* Animated gradient background */
-        .bg-gradient {
+        .bg-glow {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            background: var(--bg-primary);
-        }
-
-        .bg-gradient::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background:
-                radial-gradient(ellipse 600px 600px at 20% 30%, rgba(77, 159, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse 500px 500px at 80% 70%, rgba(255, 92, 141, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse 400px 400px at 60% 20%, rgba(78, 204, 163, 0.05) 0%, transparent 50%);
-            animation: gradientShift 20s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, 3%) rotate(1deg); }
-            66% { transform: translate(-2%, -1%) rotate(-1deg); }
-        }
-
-        /* Noise texture overlay */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* Subtle grid pattern */
-        .grid-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
             z-index: -1;
-            opacity: 0.02;
-            background-image:
-                linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 600px 600px at 20% 20%, rgba(255, 213, 79, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 500px 500px at 85% 60%, rgba(255, 92, 141, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 450px 450px at 50% 90%, rgba(78, 204, 163, 0.05) 0%, transparent 55%);
         }
 
-        .font-display {
-            font-family: var(--font-display);
-            font-weight: 400;
-            line-height: 1.2;
+        a { color: var(--accent-blue); }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(18px) rotate(0deg); }
         }
 
-        /* Color utilities */
-        .text-blue { color: var(--accent-blue); }
-        .text-pink { color: var(--accent-pink); }
-        .text-yellow { color: var(--accent-yellow); }
-        .text-green { color: var(--accent-green); }
-        .text-purple { color: var(--accent-purple); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .font-display { font-family: var(--font-display); font-weight: 400; }
 
         /* Navigation */
         nav {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem 4rem;
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            background: rgba(34, 34, 34, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 1rem clamp(1.25rem, 4vw, 3rem);
+            background: rgba(34, 34, 34, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
         }
 
         .logo {
             font-family: var(--font-mono);
-            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: 1rem;
+            transform: rotate(-1deg);
             color: var(--text-primary);
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: clamp(1rem, 3vw, 2rem);
+            flex-wrap: wrap;
             list-style: none;
         }
 
         .nav-links a {
-            color: var(--text-secondary);
+            color: var(--text-nav);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
-            position: relative;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
+        .nav-links a:hover { color: var(--text-primary); }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-blue);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
+        /* Hero */
         .hero {
-            min-height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 10rem 4rem 6rem;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 4rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: clamp(2.5rem, 8vw, 5rem) clamp(1.25rem, 4vw, 3rem) 3rem;
         }
 
-        .hero-text {
-            flex: 1;
-        }
-
-        .hero-visual {
-            flex-shrink: 0;
-        }
-
-        .hero-anim {
-            width: 400px;
-            height: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .mobile-break {
-            display: none;
-        }
-
-        .hero-label {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            background: var(--bg-tertiary);
-            padding: 0.5rem 1rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
+        .hero-text { flex: 1; min-width: 280px; }
 
         .hero-title {
             font-family: var(--font-display);
-            font-size: clamp(3.5rem, 8vw + 1rem, 7rem);
-            font-weight: 400;
+            font-size: clamp(3rem, 7vw, 6rem);
             line-height: 1.05;
-            margin-bottom: 1.5rem;
             letter-spacing: -1px;
-            color: var(--text-primary);
-            animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 1rem;
         }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .hero-description {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            max-width: 600px;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+        .hero-tagline {
+            font-size: 1.15rem;
             font-weight: 500;
+            line-height: 1.6;
+            color: var(--text-body);
+            max-width: 520px;
         }
 
-        .hero-roles {
+        .hero-anim {
+            width: 320px;
+            max-width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transform: rotate(1deg);
+        }
+
+        /* Section headers */
+        .eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-eyebrow);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 400;
+        }
+
+        .fade-target {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-target.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Projects */
+        .projects {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem clamp(1.25rem, 4vw, 3rem) 5rem;
+        }
+
+        .projects-header { margin-bottom: 2rem; }
+
+        .projects-header .section-title { margin-bottom: 2rem; }
+
+        .tabs {
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
         }
 
-        .role-tag {
-            padding: 0.75rem 1.5rem;
-            border: 1px solid var(--border-color);
+        .tab-pill {
+            padding: 0.65rem 1.3rem;
+            border-radius: 999px;
             font-family: var(--font-mono);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: default;
-            border-radius: 6px;
+            cursor: pointer;
+            border: 1.5px solid var(--border-color);
+            background: #2a2a2a;
+            color: var(--text-body);
+            transition: all 0.2s;
         }
 
-        .role-tag:nth-child(1) {
-            animation: fadeIn 0.6s ease 0.5s backwards;
-        }
-        .role-tag:nth-child(2) {
-            animation: fadeIn 0.6s ease 0.6s backwards;
-        }
-        .role-tag:nth-child(3) {
-            animation: fadeIn 0.6s ease 0.7s backwards;
-        }
+        .tab-pill:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.06); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .tab-pill--game:hover, .tab-pill--game.active { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .tab-pill--art:hover, .tab-pill--art.active { border-color: var(--accent-green); color: var(--accent-green); }
+        .tab-pill--app:hover, .tab-pill--app.active { border-color: var(--accent-blue); color: var(--accent-blue); }
 
-        .role-tag:hover {
-            transform: translateY(-3px);
-            border-color: var(--border-light);
-        }
-
-        .role-tag.blue {
-            background: rgba(77, 159, 255, 0.15);
-            color: var(--accent-blue);
-            border-color: rgba(77, 159, 255, 0.3);
-        }
-
-        .role-tag.blue:hover {
-            background: rgba(77, 159, 255, 0.25);
-            box-shadow: 0 8px 24px rgba(77, 159, 255, 0.2);
-        }
-
-        .role-tag.pink {
-            background: rgba(255, 92, 141, 0.15);
-            color: var(--accent-pink);
-            border-color: rgba(255, 92, 141, 0.3);
-        }
-
-        .role-tag.pink:hover {
-            background: rgba(255, 92, 141, 0.25);
-            box-shadow: 0 8px 24px rgba(255, 92, 141, 0.2);
-        }
-
-        .role-tag.green {
-            background: rgba(78, 204, 163, 0.15);
-            color: var(--accent-green);
-            border-color: rgba(78, 204, 163, 0.3);
-        }
-
-        .role-tag.green:hover {
-            background: rgba(78, 204, 163, 0.25);
-            box-shadow: 0 8px 24px rgba(78, 204, 163, 0.2);
-        }
-
-        /* Section Headers */
-        .section-header {
-            padding: 6rem 4rem 3rem;
-            border-top: 1px solid var(--border-color);
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .section-header.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-number {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 5vw + 0.5rem, 4.5rem);
-            font-weight: 400;
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-            color: var(--text-primary);
-        }
-
-        /* Projects Grid - Browser Preview Style */
-        .projects {
-            padding: 0 4rem 6rem;
-        }
+        .tab-pill--game.active { background: rgba(255, 92, 141, 0.15); }
+        .tab-pill--art.active { background: rgba(78, 204, 163, 0.15); }
+        .tab-pill--app.active { background: rgba(77, 159, 255, 0.15); }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 1.1rem;
+            margin-top: 1.75rem;
         }
 
-        .project {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
+        .project-card {
             position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transform: rotate(var(--rot)) scale(1);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation-delay: var(--delay);
         }
 
-        .project.visible {
-            opacity: 1;
+        .project-card.hidden { display: none; }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 16px;
+            width: 46px;
+            height: 18px;
+            background: var(--tape);
+            opacity: 0.85;
+            transform: rotate(-4deg);
+            z-index: 3;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
         }
 
-        .project:hover {
-            transform: translateY(-6px);
-            border-color: var(--border-light);
-            box-shadow:
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
+        .project-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            z-index: 5;
+            box-shadow: 0 20px 36px rgba(0, 0, 0, 0.45);
         }
 
-        /* Browser-style preview header */
+        .project-card--game:hover { border-color: var(--accent-pink); }
+        .project-card--art:hover { border-color: var(--accent-green); }
+        .project-card--app:hover { border-color: var(--accent-blue); }
+
         .project-preview {
             position: relative;
             aspect-ratio: 16 / 10;
@@ -428,57 +283,7 @@
             overflow: hidden;
         }
 
-        .project-preview-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 32px;
-            background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            gap: 6px;
-            border-bottom: 1px solid var(--border-color);
-            z-index: 2;
-        }
-
-        .preview-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--text-muted);
-        }
-
-        .preview-dot.red { background: #ff5f57; }
-        .preview-dot.yellow { background: #febc2e; }
-        .preview-dot.green { background: #28c840; }
-
-        .preview-url {
-            flex: 1;
-            margin-left: 12px;
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            background: var(--bg-secondary);
-            padding: 4px 10px;
-            border-radius: 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .project-preview-content {
-            position: absolute;
-            top: 32px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            background: var(--bg-secondary);
-        }
-
-        .project-preview-content iframe {
+        .project-preview iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -490,271 +295,146 @@
             pointer-events: none;
         }
 
-        /* YouTube embeds fill properly */
-        .project.art .project-preview-content iframe {
+        .project-preview iframe.youtube {
             width: 100%;
             height: 100%;
             transform: none;
         }
 
-        /* Preview images for games */
-        .project-preview-img {
+        .project-preview img {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
         }
 
-        .project-preview-placeholder {
+        .project-badge {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            color: var(--text-muted);
-            opacity: 0.5;
-            transition: all 0.3s ease;
-        }
-
-        .project.web .project-preview-content {
-            background: linear-gradient(135deg, rgba(77, 159, 255, 0.08) 0%, var(--bg-secondary) 100%);
-        }
-
-        .project.game .project-preview-content {
-            background: linear-gradient(135deg, rgba(255, 92, 141, 0.08) 0%, var(--bg-secondary) 100%);
-        }
-
-        .project.art .project-preview-content {
-            background: linear-gradient(135deg, rgba(78, 204, 163, 0.08) 0%, var(--bg-secondary) 100%);
-        }
-
-        .project:hover .project-preview-placeholder {
-            transform: translate(-50%, -50%) scale(1.05);
-            opacity: 0.7;
-        }
-
-        /* More Projects Card */
-        .project.more-projects {
-            grid-column: span 2;
-            background: transparent;
-            border: 2px dashed var(--border-color);
-        }
-
-        .project.more-projects:hover {
-            border-color: var(--accent-blue);
-            background: rgba(77, 159, 255, 0.05);
-        }
-
-        .project.more-projects .project-preview {
-            background: transparent;
-            aspect-ratio: 32 / 6;
-        }
-
-        .project.more-projects .project-preview-bar {
-            background: transparent;
-            border-bottom: none;
-        }
-
-        .project.more-projects .project-preview-content {
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .more-icon {
-            font-size: 3.5rem;
-            color: var(--text-muted);
-            transition: all 0.3s;
-        }
-
-        .project.more-projects:hover .more-icon {
-            color: var(--accent-blue);
-            transform: scale(1.1);
-        }
-
-        .project.more-projects .project-content {
-            text-align: center;
-        }
-
-        .project.more-projects .project-name {
-            color: var(--text-secondary);
-        }
-
-        .project.more-projects:hover .project-name {
-            color: var(--accent-blue);
-        }
-
-        /* Project type badge */
-        .project-type-badge {
-            position: absolute;
-            top: 44px;
-            right: 12px;
+            top: 8px;
+            right: 8px;
+            z-index: 3;
             font-family: var(--font-mono);
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 4px 8px;
+            letter-spacing: 0.5px;
+            padding: 3px 7px;
             border-radius: 4px;
-            z-index: 3;
         }
 
-        .project.web .project-type-badge {
-            background: rgba(77, 159, 255, 0.2);
-            color: var(--accent-blue);
-        }
+        .project-card--game .project-badge { background: rgba(255, 92, 141, 0.15); color: var(--accent-pink); }
+        .project-card--art .project-badge { background: rgba(78, 204, 163, 0.15); color: var(--accent-green); }
+        .project-card--app .project-badge { background: rgba(77, 159, 255, 0.15); color: var(--accent-blue); }
 
-        .project.game .project-type-badge {
-            background: rgba(255, 92, 141, 0.2);
-            color: var(--accent-pink);
-        }
-
-        .project.art .project-type-badge {
-            background: rgba(78, 204, 163, 0.2);
-            color: var(--accent-green);
-        }
-
-        .project-content {
-            padding: 1.5rem;
-            position: relative;
-        }
+        .project-content { padding: 1.1rem; }
 
         .project-number {
             font-family: var(--font-mono);
-            font-size: 0.65rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
+            font-size: 0.6rem;
             letter-spacing: 1px;
+            color: var(--text-eyebrow);
+            margin-bottom: 0.4rem;
         }
 
         .project-name {
             font-family: var(--font-display);
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 400;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.5px;
-            color: var(--text-primary);
-            line-height: 1.2;
+            margin-bottom: 0.5rem;
         }
 
-        .project-description {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-            color: var(--text-secondary);
+        .project-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
             font-weight: 500;
+            color: var(--text-body);
+            margin-bottom: 1rem;
         }
 
         .project-tech {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-bottom: 1.25rem;
+            gap: 0.35rem;
+            margin-bottom: 1rem;
         }
 
         .tech-pill {
             font-family: var(--font-mono);
-            font-size: 0.65rem;
-            padding: 0.35rem 0.7rem;
-            border: 1px solid var(--border-color);
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
+            font-size: 0.6rem;
             font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--border-color);
+            background: #2a2a2a;
+            color: var(--text-body);
             border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .project:hover .tech-pill {
-            border-color: var(--border-light);
         }
 
         .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
             text-decoration: none;
-            color: var(--text-secondary);
-            transition: all 0.3s;
+            color: var(--text-body);
+            transition: color 0.2s, letter-spacing 0.2s;
         }
 
-        .project-link::after {
-            content: '\2192';
-            transition: transform 0.3s;
-        }
+        .project-card--game:hover .project-link { color: var(--accent-pink); }
+        .project-card--art:hover .project-link { color: var(--accent-green); }
+        .project-card--app:hover .project-link { color: var(--accent-blue); }
 
-        .project:hover .project-link {
-            color: var(--accent-blue);
-        }
-
-        .project:hover .project-link::after {
-            transform: translateX(4px);
-        }
-
-        .project.game:hover .project-link {
-            color: var(--accent-pink);
-        }
-
-        .project.art:hover .project-link {
-            color: var(--accent-green);
-        }
-
-        /* Skills Section */
-        .skills {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 6rem 4rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .skills-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .skills-header {
-            margin-bottom: 3rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .skills-header.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .skills-header .section-number {
+        .project-link--disabled {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
             color: var(--text-muted);
         }
 
-        .skills-header .section-title {
-            color: var(--text-primary);
+        .more-link {
+            display: block;
+            margin-top: 1.1rem;
+            padding: 0.9rem;
+            text-align: center;
+            border: 1.5px dashed var(--border-color);
+            border-radius: 10px;
+            color: var(--text-nav);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
         }
+
+        .more-link:hover {
+            border-color: var(--accent-blue);
+            background: rgba(77, 159, 255, 0.06);
+            color: var(--accent-blue);
+        }
+
+        /* Skills */
+        .skills {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: clamp(2.5rem, 8vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+        }
+
+        .skills-inner { max-width: 1300px; margin: 0 auto; }
+
+        .skills .section-title { margin-bottom: 2.5rem; }
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
         }
 
         .skill-category {
+            position: relative;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.75rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.6s ease;
-            position: relative;
+            border-radius: 10px;
+            padding: 1.5rem;
         }
 
         .skill-category::before {
@@ -764,921 +444,452 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: var(--accent-blue);
-            border-radius: 12px 12px 0 0;
+            border-radius: 10px 10px 0 0;
         }
 
-        .skill-category.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .skill-category:nth-child(2) {
-            transition-delay: 0.15s;
-        }
-
-        .skill-category:nth-child(2)::before {
-            background: var(--accent-pink);
-        }
-
-        .skill-category:nth-child(3) {
-            transition-delay: 0.3s;
-        }
-
-        .skill-category:nth-child(3)::before {
-            background: var(--accent-green);
-        }
-
-        .skill-category:hover {
-            border-color: var(--border-light);
-        }
+        .skill-category--automation::before { background: var(--accent-blue); }
+        .skill-category--languages::before { background: var(--accent-pink); }
+        .skill-category--creative::before { background: var(--accent-green); }
 
         .skill-category-title {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 1.25rem;
-            color: var(--text-secondary);
+            color: var(--text-body);
+            margin-bottom: 1rem;
         }
 
-        .skill-list {
-            list-style: none;
-        }
+        .skill-list { list-style: none; }
 
         .skill-list li {
-            font-size: 0.95rem;
-            margin-bottom: 0.6rem;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-            cursor: default;
-            opacity: 0;
-            transform: translateX(-10px);
+            font-size: 0.9rem;
             font-weight: 500;
+            color: var(--text-body);
+            margin-bottom: 0.5rem;
         }
 
-        .skill-category.visible .skill-list li {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .skill-category.visible .skill-list li:nth-child(1) { transition-delay: 0.1s; }
-        .skill-category.visible .skill-list li:nth-child(2) { transition-delay: 0.15s; }
-        .skill-category.visible .skill-list li:nth-child(3) { transition-delay: 0.2s; }
-        .skill-category.visible .skill-list li:nth-child(4) { transition-delay: 0.25s; }
-        .skill-category.visible .skill-list li:nth-child(5) { transition-delay: 0.3s; }
-        .skill-category.visible .skill-list li:nth-child(6) { transition-delay: 0.35s; }
-        .skill-category.visible .skill-list li:nth-child(7) { transition-delay: 0.4s; }
-
-        .skill-list li:hover {
-            color: var(--text-primary);
-            transform: translateX(5px);
-        }
-
-        /* About Section */
-        .about {
-            padding: 6rem 4rem;
+        /* Contact */
+        .contact {
             background: var(--bg-primary);
             border-top: 1px solid var(--border-color);
+            padding: clamp(2.5rem, 8vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
         }
 
-        .about-content {
-            max-width: 900px;
-            margin: 0 auto;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .about-content.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .about-text {
-            font-size: clamp(1.4rem, 2.5vw, 2rem);
-            line-height: 1.6;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: var(--text-primary);
-        }
-
-        .about-text strong {
-            font-weight: 600;
-            position: relative;
-        }
-
-        .about-text .highlight-blue {
-            color: var(--accent-blue);
-        }
-
-        .about-text .highlight-pink {
-            color: var(--accent-pink);
-        }
-
-        .about-text .highlight-green {
-            background: rgba(78, 204, 163, 0.2);
-            color: var(--accent-green);
-            padding: 0.1rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .about-text .highlight-yellow {
-            background: rgba(255, 213, 79, 0.15);
-            color: var(--accent-yellow);
-            padding: 0.1rem 0.5rem;
-            font-weight: 600;
-            border-radius: 4px;
-        }
-
-        .about-text .outline-pink {
-            background: rgba(255, 92, 141, 0.2);
-            color: var(--accent-pink);
-            padding: 0 0.5rem;
-            border-radius: 4px;
-        }
-
-        .chum-link {
-            color: var(--accent-pink);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 92, 141, 0.4);
-            transition: all 0.3s;
-        }
-
-        .chum-link:hover {
-            border-bottom-color: var(--accent-pink);
-        }
-
-        .about-secondary {
-            margin-top: 1.5rem;
-            font-size: 0.75em;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 6rem 4rem;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-        }
-
-        .contact-content {
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 3rem;
+            align-items: center;
             max-width: 1000px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .contact-content.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .contact-title {
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
+            font-size: clamp(2rem, 3.5vw, 3rem);
             font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 1.25rem;
-            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
 
-        .contact-description {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 0;
+        .contact-desc {
+            font-size: 1rem;
+            line-height: 1.6;
             font-weight: 500;
+            color: var(--text-body);
         }
 
         .contact-links {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.7rem;
         }
 
-        .contact-button {
+        .btn-copy-email, .btn-social {
             display: inline-block;
-            padding: 1rem 1.75rem;
+            text-align: center;
+            padding: 0.9rem 1.5rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-copy-email {
+            border: 1px solid var(--accent-blue);
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+        }
+
+        .btn-copy-email.copied {
+            border-color: var(--accent-green);
+            background: var(--accent-green);
+        }
+
+        .btn-social {
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             color: var(--text-primary);
-            text-decoration: none;
-            font-family: var(--font-mono);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: center;
-            cursor: pointer;
-            border-radius: 8px;
         }
 
-        .contact-button:hover {
+        .btn-social:hover {
             transform: translateY(-2px);
             border-color: var(--border-light);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-button.primary {
-            background: var(--accent-blue);
-            color: var(--bg-primary);
-            border-color: var(--accent-blue);
-        }
-
-        .contact-button.primary:hover {
-            box-shadow: 0 8px 24px rgba(77, 159, 255, 0.3);
-        }
-
-        .contact-button.secondary {
-            background: rgba(255, 92, 141, 0.15);
-            color: var(--accent-pink);
-            border-color: rgba(255, 92, 141, 0.3);
-        }
-
-        .contact-button.secondary:hover {
-            background: rgba(255, 92, 141, 0.25);
-            box-shadow: 0 8px 24px rgba(255, 92, 141, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
         }
 
         /* Footer */
         footer {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 3rem 4rem;
+            padding: 2rem;
             text-align: center;
             border-top: 1px solid var(--border-color);
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .footer-text {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
-            letter-spacing: 0.5px;
-        }
-
-        /* Responsive */
-        @media (max-width: 1280px) {
-            nav {
-                padding: 1rem 2rem;
-            }
-
-            .hero {
-                padding: 7rem 2rem 3rem;
-            }
-
-            .hero-content {
-                display: block;
-                position: relative;
-            }
-
-            .hero-visual {
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
-
-            .hero-anim {
-                width: 180px;
-            }
-
-            .mobile-break {
-                display: block;
-            }
-
-            .section-header,
-            .projects,
-            .skills,
-            .about,
-            .contact {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-
-            .project-preview {
-                aspect-ratio: 16 / 9;
-            }
-
-            .project-content {
-                padding: 1.25rem;
-            }
-
-            .project-name {
-                font-size: 1.25rem;
-            }
-
-            .project-description {
-                font-size: 0.85rem;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            .project-tech {
-                display: none;
-            }
-
-            .hero-roles {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .role-tag {
-                padding: 0.5rem 1rem;
-                font-size: 0.65rem;
-            }
-
-            .section-header {
-                padding: 4rem 2rem 2rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-            }
-
-            .skill-category {
-                padding: 1.25rem;
-            }
-
-            .skill-category-title {
-                font-size: 0.7rem;
-                margin-bottom: 1rem;
-            }
-
-            .skill-list li {
-                font-size: 0.85rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .contact-title {
-                font-size: clamp(2rem, 5vw, 3rem);
-            }
-
-            .contact-description {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .contact-button {
-                padding: 0.875rem 1.5rem;
-                font-size: 0.75rem;
-            }
-
-            .about {
-                padding: 4rem 2rem;
-            }
-
-            .about-text {
-                font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-            }
-
-            .skills {
-                padding: 4rem 2rem;
-            }
-
-            .skills-header {
-                margin-bottom: 2rem;
-            }
-
-            footer {
-                padding: 2rem;
-            }
-
-            .hero-title {
-                font-size: clamp(3rem, 10vw, 5rem);
-            }
-
-            .section-title {
-                font-size: clamp(2rem, 6vw, 3.5rem);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-                gap: 1.25rem;
-            }
-
-            .project.more-projects {
-                grid-column: span 1;
-            }
-
-            .project.more-projects .project-preview {
-                aspect-ratio: 16 / 8;
-            }
-
-            .project-preview {
-                aspect-ratio: 16 / 8;
-            }
-
-            .project-description {
-                display: block;
-            }
-
-            .project-tech {
-                display: flex;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
         }
 
         @media (max-width: 640px) {
-            nav {
-                flex-direction: column;
-                gap: 0.75rem;
-                padding: 1rem 1.5rem;
-            }
-
-            .nav-links {
-                gap: 1.25rem;
-                font-size: 0.8rem;
-            }
-
-            .hero {
-                padding: 6rem 1.5rem 2rem;
-            }
-
-            .hero-label {
-                margin-bottom: 1rem;
-                font-size: 0.65rem;
-            }
-
-            .hero-title {
-                font-size: clamp(2.5rem, 12vw, 3.5rem);
-                margin-bottom: 1rem;
-            }
-
-            .hero-description {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .hero-anim {
-                width: 120px;
-            }
-
-            .project-content {
-                padding: 1rem;
-            }
-
-            .project-name {
-                font-size: 1.1rem;
-            }
-
-            .project-number {
-                font-size: 0.6rem;
-            }
-
-            .project-link {
-                font-size: 0.7rem;
-            }
-
-            .project-preview-bar {
-                height: 28px;
-            }
-
-            .preview-dot {
-                width: 8px;
-                height: 8px;
-            }
-
-            .preview-url {
-                font-size: 0.6rem;
-            }
-
-            .section-header {
-                padding: 3rem 1.5rem 1.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-                margin-bottom: 1rem;
-            }
-
-            .projects {
-                padding-bottom: 3rem;
-            }
-
-            .skills {
-                padding: 3rem 1.5rem;
-            }
-
-            .skill-category {
-                padding: 1.25rem;
-            }
-
-            .skill-category-title {
-                font-size: 0.75rem;
-            }
-
-            .skill-list li {
-                font-size: 0.9rem;
-            }
-
-            .about {
-                padding: 3rem 1.5rem;
-            }
-
-            .about-text {
-                font-size: 1.1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .about-secondary {
-                font-size: 0.9rem;
-            }
-
-            .contact {
-                padding: 3rem 1.5rem;
-            }
-
-            .contact-title {
-                font-size: 2rem;
-                margin-bottom: 1rem;
-            }
-
-            .contact-description {
-                font-size: 0.95rem;
-            }
-
-            .contact-links {
-                gap: 0.6rem;
-            }
-
-            .contact-button {
-                padding: 0.875rem 1.5rem;
-                font-size: 0.7rem;
-            }
-
-            footer {
-                padding: 1.5rem;
-            }
-
-            .footer-text {
-                font-size: 0.7rem;
-            }
+            .hero-anim { width: 160px; }
+            .project-tech { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Background effects -->
-    <div class="bg-gradient"></div>
-    <div class="grid-pattern"></div>
-    <div class="noise-overlay"></div>
+    <div class="bg-glow"></div>
 
-    <!-- Navigation -->
     <nav>
         <div class="logo">KODY GENTRY</div>
         <ul class="nav-links">
             <li><a href="#projects">Projects</a></li>
-            <li><a href="prototypes/">Prototypes</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <span class="hero-label">Texas, USA</span>
-                <h1 class="hero-title">Kody <br class="mobile-break"><span class="text-blue">Gentry</span></h1>
-                <p class="hero-description">
-                    <span class="text-blue">Software engineer</span> who builds <span class="text-pink">games</span>, software, and weird side projects.
-                </p>
-                <div class="hero-roles">
-                    <div class="role-tag blue">Software Engineer</div>
-                    <div class="role-tag pink">Game Dev</div>
-                    <div class="role-tag green">Tinkerer</div>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <img src="static/anim.gif" alt="Animation" class="hero-anim">
-            </div>
+        <div class="hero-text">
+            <h1 class="hero-title">Kody <span style="color:var(--accent-blue)">Gentry</span></h1>
+            <p class="hero-tagline">Software engineer by day. Everything else here happened at night or on weekends.</p>
         </div>
+        <img src="static/anim.gif" alt="Animation" class="hero-anim">
     </section>
 
-    <!-- Projects Section -->
-    <div class="section-header" id="projects">
-        <div class="section-number">01 / SELECTED WORK</div>
-        <h2 class="section-title">Projects</h2>
-    </div>
-
-    <section class="projects">
-        <div class="projects-grid">
-            <!-- txt.gallery -->
-            <div class="project web">
-                <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">txt-gallery.vercel.app</span>
-                    </div>
-                    <div class="project-preview-content">
-                        <iframe src="https://txt-gallery.vercel.app/" loading="lazy" sandbox="allow-same-origin"></iframe>
-                    </div>
-                    <span class="project-type-badge">Web</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-number">WEB / 01</div>
-                    <h3 class="project-name">txt.gallery</h3>
-                    <p class="project-description">
-                        A minimalist web app for creating and sharing text-based art and ASCII creations.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-pill">JavaScript</span>
-                        <span class="tech-pill">HTML/CSS</span>
-                        <span class="tech-pill">Art</span>
-                    </div>
-                    <a href="https://txt-gallery.vercel.app/" class="project-link" target="_blank">View Live</a>
-                </div>
+    <!-- Projects -->
+    <section class="projects" id="projects">
+        <div class="projects-header fade-target" id="projects-header">
+            <div class="eyebrow">The pile</div>
+            <h2 class="section-title">Stuff I've made</h2>
+            <div class="tabs">
+                <button class="tab-pill tab-pill--game active" data-tab="game">Game Dev (6)</button>
+                <button class="tab-pill tab-pill--art" data-tab="art">Art (3)</button>
+                <button class="tab-pill tab-pill--app" data-tab="app">App Dev (3)</button>
             </div>
+        </div>
 
-            <!-- Midnight Slice Demo -->
-            <div class="project game">
+        <div class="projects-grid">
+            <!-- Game / 01 - Chum Studios -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:-1.2deg;--tape:var(--accent-yellow);--delay:0s;">
                 <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">chumstudios.itch.io/midnight-slice</span>
-                    </div>
-                    <div class="project-preview-content">
-                        <img src="https://img.itch.zone/aW1nLzE2NjM5MTk5LnBuZw==/original/wXvhGK.png" alt="Midnight Slice preview" class="project-preview-img" loading="lazy">
-                    </div>
-                    <span class="project-type-badge">Game</span>
+                    <img src="https://img.itch.zone/aW1nLzIwMzAyMjM4LnBuZw==/original/RLCuJi.png" alt="Chum Studios preview" loading="lazy">
+                    <span class="project-badge">Game</span>
                 </div>
                 <div class="project-content">
                     <div class="project-number">GAME / 01</div>
+                    <h3 class="project-name">Chum Studios</h3>
+                    <p class="project-desc">The studio Emma and I run on the side. Every game below ships under this name.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">UE5</span>
+                        <span class="tech-pill">Game Jams</span>
+                    </div>
+                    <a href="https://chumstudios.itch.io/" class="project-link" target="_blank">Visit Studio →</a>
+                </div>
+            </div>
+
+            <!-- Game / 02 - Call It -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:0.8deg;--tape:var(--accent-orange);--delay:0.07s;">
+                <div class="project-preview">
+                    <img src="static/call-it-cover.jpg" alt="Call It preview" loading="lazy">
+                    <span class="project-badge">WIP</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">GAME / 02</div>
+                    <h3 class="project-name">Call It</h3>
+                    <p class="project-desc">Currently building — a first-person, seated coin-duel on a boat at night. Buckshot Roulette-style tension, PSX/90s look.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">WIP</span>
+                        <span class="tech-pill">3D</span>
+                    </div>
+                    <span class="project-link--disabled">In Progress</span>
+                </div>
+            </div>
+
+            <!-- Game / 03 - Dust & Iron -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:-0.4deg;--tape:var(--accent-purple);--delay:0.14s;">
+                <div class="project-preview">
+                    <img src="https://img.itch.zone/aW1nLzI1NzE4MzQ4LnBuZw==/original/HHlJaW.png" alt="Dust &amp; Iron preview" loading="lazy">
+                    <span class="project-badge">Game</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">GAME / 03</div>
+                    <h3 class="project-name">Dust &amp; Iron</h3>
+                    <p class="project-desc">First-person western for Brackeys Game Jam 2026.1. You're a bounty collector in a purgatory Old West — five targets, one ending you choose.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">Jam Game</span>
+                        <span class="tech-pill">3D</span>
+                    </div>
+                    <a href="https://chumstudios.itch.io/dust-and-iron" class="project-link" target="_blank">Play It →</a>
+                </div>
+            </div>
+
+            <!-- Game / 04 - Midnight Slice -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:1.3deg;--tape:var(--accent-green);--delay:0.21s;">
+                <div class="project-preview">
+                    <img src="https://img.itch.zone/aW1nLzE2NjM5MTk5LnBuZw==/original/wXvhGK.png" alt="Midnight Slice preview" loading="lazy">
+                    <span class="project-badge">Game</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">GAME / 04</div>
                     <h3 class="project-name">Midnight Slice</h3>
-                    <p class="project-description">
-                        A stylized game demo from Chum Studios with unique gameplay and atmospheric design.
-                    </p>
+                    <p class="project-desc">A short combat demo I built with the Chum Studios crew. Fast and rough around the edges on purpose.</p>
                     <div class="project-tech">
                         <span class="tech-pill">UE5</span>
                         <span class="tech-pill">C#</span>
                         <span class="tech-pill">Game Design</span>
                     </div>
-                    <a href="https://chumstudios.itch.io/midnight-slice-demo" class="project-link" target="_blank">Play Demo</a>
+                    <a href="https://chumstudios.itch.io/midnight-slice-demo" class="project-link" target="_blank">Play Demo →</a>
                 </div>
             </div>
 
-            <!-- Godot Dot Shader -->
-            <div class="project art">
+            <!-- Game / 05 - Eternal Burn -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:0deg;--tape:var(--accent-yellow);--delay:0.28s;">
                 <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">youtube.com/watch?v=Uou0grxS5SY</span>
-                    </div>
-                    <div class="project-preview-content">
-                        <iframe src="https://www.youtube.com/embed/Uou0grxS5SY" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                    </div>
-                    <span class="project-type-badge">Tool</span>
+                    <img src="https://img.itch.zone/aW1nLzE3Mjg0NDA4LmdpZg==/original/8Uw%2Fwu.gif" alt="Eternal Burn preview" loading="lazy">
+                    <span class="project-badge">Game</span>
                 </div>
                 <div class="project-content">
-                    <div class="project-number">TOOL / 01</div>
-                    <h3 class="project-name">Godot Dot Shader</h3>
-                    <p class="project-description">
-                        A custom shader for stylized dot/halftone visuals with a tutorial walkthrough.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-pill">Godot</span>
-                        <span class="tech-pill">Shaders</span>
-                        <span class="tech-pill">GLSL</span>
-                    </div>
-                    <a href="https://youtu.be/Uou0grxS5SY?si=VRV1Mv7l44atXEcE" class="project-link" target="_blank">Watch Tutorial</a>
-                </div>
-            </div>
-
-            <!-- Eternal Burn -->
-            <div class="project game">
-                <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">chumstudios.itch.io/eternal-burn</span>
-                    </div>
-                    <div class="project-preview-content">
-                        <img src="https://img.itch.zone/aW1nLzE3Mjg0NDA4LmdpZg==/original/8Uw%2Fwu.gif" alt="Eternal Burn preview" class="project-preview-img" loading="lazy">
-                    </div>
-                    <span class="project-type-badge">Game</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-number">GAME / 02</div>
+                    <div class="project-number">GAME / 05</div>
                     <h3 class="project-name">Eternal Burn</h3>
-                    <p class="project-description">
-                        A Chum Studios game with engaging gameplay and polished visuals.
-                    </p>
+                    <p class="project-desc">Our second Chum Studios release. Built in Godot, played by more people than I expected.</p>
                     <div class="project-tech">
                         <span class="tech-pill">Godot</span>
                         <span class="tech-pill">GDScript</span>
                         <span class="tech-pill">Game Design</span>
                     </div>
-                    <a href="https://chumstudios.itch.io/eternal-burn" class="project-link" target="_blank">Play Game</a>
+                    <a href="https://chumstudios.itch.io/eternal-burn" class="project-link" target="_blank">Play Game →</a>
                 </div>
             </div>
 
-            <!-- Chum Fitness App -->
-            <div class="project web">
+            <!-- Game / 06 - Godot Dot Shader -->
+            <div class="project-card project-card--game" data-category="game" style="--rot:-0.9deg;--tape:var(--accent-orange);--delay:0.35s;">
                 <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">testflight.apple.com</span>
+                    <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/Uou0grxS5SY?rel=0" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                    <span class="project-badge">Game</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">GAME / 06</div>
+                    <h3 class="project-name">Godot Dot Shader</h3>
+                    <p class="project-desc">A halftone dot shader for Godot. Made a tutorial breaking down how it works.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Godot</span>
+                        <span class="tech-pill">Shaders</span>
+                        <span class="tech-pill">GLSL</span>
                     </div>
-                    <div class="project-preview-content">
-                        <img src="static/chumfitness-icon.jpg" alt="Chum Fitness app icon" class="project-preview-img" loading="lazy">
+                    <a href="https://youtu.be/Uou0grxS5SY?si=VRV1Mv7l44atXEcE" class="project-link" target="_blank">Watch Tutorial →</a>
+                </div>
+            </div>
+
+            <!-- Art / 01 - koma studio -->
+            <div class="project-card project-card--art hidden" data-category="art" style="--rot:-1.2deg;--tape:var(--accent-yellow);--delay:0s;">
+                <div class="project-preview">
+                    <iframe src="https://koma-studio.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">Art</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">ART / 01</div>
+                    <h3 class="project-name">koma studio</h3>
+                    <p class="project-desc">An archive Emma and I keep for whatever we're working on — paintings, code, whatever.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Next.js</span>
+                        <span class="tech-pill">Design</span>
+                        <span class="tech-pill">Archive</span>
                     </div>
-                    <span class="project-type-badge">iOS App</span>
+                    <a href="https://koma-studio.vercel.app/" class="project-link" target="_blank">Visit Studio →</a>
+                </div>
+            </div>
+
+            <!-- Art / 02 - Idea Hub -->
+            <div class="project-card project-card--art hidden" data-category="art" style="--rot:0.8deg;--tape:var(--accent-orange);--delay:0.07s;">
+                <div class="project-preview">
+                    <iframe src="https://idea-hub-iota-ten.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">Art</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">ART / 02</div>
+                    <h3 class="project-name">Idea Hub</h3>
+                    <p class="project-desc">A place to dump ideas before they're fully formed, so they don't just disappear.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">React</span>
+                        <span class="tech-pill">Ideas</span>
+                        <span class="tech-pill">Sketchbook</span>
+                    </div>
+                    <a href="https://idea-hub-iota-ten.vercel.app/" class="project-link" target="_blank">Browse Ideas →</a>
+                </div>
+            </div>
+
+            <!-- Art / 03 - Ladybug -->
+            <div class="project-card project-card--art hidden" data-category="art" style="--rot:-0.4deg;--tape:var(--accent-purple);--delay:0.14s;">
+                <div class="project-preview">
+                    <iframe src="https://ladybug-pied.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">Art</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-number">ART / 03</div>
+                    <h3 class="project-name">Ladybug</h3>
+                    <p class="project-desc">Emma's site for her paintings — originals, prints, and commissions.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">Next.js</span>
+                        <span class="tech-pill">Gallery</span>
+                        <span class="tech-pill">Commissions</span>
+                    </div>
+                    <a href="https://ladybug-pied.vercel.app/" class="project-link" target="_blank">See the Gallery →</a>
+                </div>
+            </div>
+
+            <!-- App / 01 - txt.gallery -->
+            <div class="project-card project-card--app hidden" data-category="app" style="--rot:-1.2deg;--tape:var(--accent-yellow);--delay:0s;">
+                <div class="project-preview">
+                    <iframe src="https://txt-gallery.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">App</span>
                 </div>
                 <div class="project-content">
                     <div class="project-number">APP / 01</div>
-                    <h3 class="project-name">Chum Fitness</h3>
-                    <p class="project-description">
-                        A comprehensive fitness tracking app for workouts, nutrition tracking, and social features.
-                    </p>
+                    <h3 class="project-name">txt.gallery</h3>
+                    <p class="project-desc">A small tool for making ASCII art in the browser.</p>
                     <div class="project-tech">
-                        <span class="tech-pill">Swift</span>
-                        <span class="tech-pill">SwiftUI</span>
-                        <span class="tech-pill">Supabase</span>
+                        <span class="tech-pill">JavaScript</span>
+                        <span class="tech-pill">HTML/CSS</span>
                     </div>
-                    <a href="https://testflight.apple.com/join/pKqGnPqL" class="project-link" target="_blank">Get on TestFlight</a>
+                    <a href="https://txt-gallery.vercel.app/" class="project-link" target="_blank">View Live →</a>
                 </div>
             </div>
 
-            <!-- One Tap Habits App -->
-            <div class="project web">
+            <!-- App / 02 - Cycling Log -->
+            <div class="project-card project-card--app hidden" data-category="app" style="--rot:0.8deg;--tape:var(--accent-orange);--delay:0.07s;">
                 <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span class="preview-url">apps.apple.com</span>
-                    </div>
-                    <div class="project-preview-content">
-                        <img src="static/onetaphabits-icon.jpg" alt="One Tap Habits app icon" class="project-preview-img" loading="lazy">
-                    </div>
-                    <span class="project-type-badge">iOS App</span>
+                    <iframe src="https://cycling-beta.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">App</span>
                 </div>
                 <div class="project-content">
                     <div class="project-number">APP / 02</div>
-                    <h3 class="project-name">One Tap Habits</h3>
-                    <p class="project-description">
-                        A minimal habit tracker app for building and maintaining daily habits with ease.
-                    </p>
+                    <h3 class="project-name">Cycling Log</h3>
+                    <p class="project-desc">Pulls my rides straight from Strava so I stop checking the app for stats.</p>
                     <div class="project-tech">
-                        <span class="tech-pill">SwiftUI</span>
-                        <span class="tech-pill">WidgetKit</span>
-                        <span class="tech-pill">iCloud Sync</span>
+                        <span class="tech-pill">Next.js</span>
+                        <span class="tech-pill">Strava API</span>
+                        <span class="tech-pill">Data</span>
                     </div>
-                    <a href="https://apps.apple.com/us/app/one-tap-habits/id6757314594" class="project-link" target="_blank">Download on App Store</a>
+                    <a href="https://cycling-beta.vercel.app/" class="project-link" target="_blank">See the Miles →</a>
                 </div>
             </div>
-            <!-- More Projects -->
-            <a href="https://github.com/kog-ko?tab=repositories" target="_blank" class="project more-projects" style="text-decoration: none;">
+
+            <!-- App / 03 - Meal Plan -->
+            <div class="project-card project-card--app hidden" data-category="app" style="--rot:-0.4deg;--tape:var(--accent-purple);--delay:0.14s;">
                 <div class="project-preview">
-                    <div class="project-preview-bar">
-                        <span class="preview-dot"></span>
-                        <span class="preview-dot"></span>
-                        <span class="preview-dot"></span>
-                    </div>
-                    <div class="project-preview-content">
-                        <span class="more-icon">+</span>
-                    </div>
+                    <iframe src="https://meal-plan-kody.vercel.app/" loading="lazy" sandbox="allow-same-origin allow-scripts"></iframe>
+                    <span class="project-badge">App</span>
                 </div>
                 <div class="project-content">
-                    <h3 class="project-name">More Projects</h3>
-                    <p class="project-description">
-                        View all my repositories on GitHub
-                    </p>
+                    <div class="project-number">APP / 03</div>
+                    <h3 class="project-name">Meal Plan</h3>
+                    <p class="project-desc">Weekly dinners and grocery lists for me and my partner, so we're not deciding at 6pm.</p>
+                    <div class="project-tech">
+                        <span class="tech-pill">React</span>
+                        <span class="tech-pill">Recipes</span>
+                        <span class="tech-pill">Grocery</span>
+                    </div>
+                    <a href="https://meal-plan-kody.vercel.app/" class="project-link" target="_blank">Plan a Week →</a>
                 </div>
-            </a>
+            </div>
         </div>
+
+        <a href="https://github.com/kog-ko?tab=repositories" target="_blank" class="more-link">More on GitHub →</a>
     </section>
 
-    <!-- Skills Section -->
+    <!-- Skills -->
     <section class="skills" id="skills">
-        <div class="skills-content">
-            <div class="skills-header">
-                <div class="section-number">02 / EXPERTISE</div>
+        <div class="skills-inner">
+            <div class="fade-target" id="skills-header">
                 <h2 class="section-title">Skills</h2>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3 class="skill-category-title">Automation</h3>
-                    <ul class="skill-list">
-                        <li>Selenium / Appium</li>
-                        <li>Cucumber / Karate</li>
-                        <li>TestNG / JUnit</li>
-                        <li>API Testing</li>
-                        <li>CI/CD (Jenkins)</li>
-                        <li>Data-Driven Testing</li>
-                        <li>POM Framework Design</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3 class="skill-category-title">Languages & Tools</h3>
-                    <ul class="skill-list">
-                        <li>Java / Python</li>
-                        <li>SQL / PostgreSQL</li>
-                        <li>JavaScript / HTML / CSS</li>
-                        <li>Spring Boot</li>
-                        <li>Flask / Django</li>
-                        <li>AWS (RDS, EC2)</li>
-                        <li>Git / Linux</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3 class="skill-category-title">Creative</h3>
-                    <ul class="skill-list">
-                        <li>Godot / GDScript</li>
-                        <li>Shader Programming</li>
-                        <li>Game Design</li>
-                        <li>2D/3D Graphics</li>
-                        <li>Level Design</li>
-                        <li>Animation</li>
-                        <li>Prototyping</li>
-                    </ul>
+                <div class="skills-grid">
+                    <div class="skill-category skill-category--automation">
+                        <h3 class="skill-category-title">Automation</h3>
+                        <ul class="skill-list">
+                            <li>Selenium / Appium</li>
+                            <li>Cucumber / Karate</li>
+                            <li>TestNG / JUnit</li>
+                            <li>API Testing</li>
+                            <li>CI/CD (Jenkins)</li>
+                            <li>POM Framework Design</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category skill-category--languages">
+                        <h3 class="skill-category-title">Languages &amp; Tools</h3>
+                        <ul class="skill-list">
+                            <li>Java / Python</li>
+                            <li>SQL / PostgreSQL</li>
+                            <li>JavaScript / HTML / CSS</li>
+                            <li>Spring Boot</li>
+                            <li>AWS (RDS, EC2)</li>
+                            <li>Git / Linux</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category skill-category--creative">
+                        <h3 class="skill-category-title">Creative</h3>
+                        <ul class="skill-list">
+                            <li>Godot / GDScript</li>
+                            <li>Shader Programming</li>
+                            <li>Game Design</li>
+                            <li>2D/3D Graphics</li>
+                            <li>Level Design</li>
+                            <li>Prototyping</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="about-content">
-            <div class="section-number">03 / WHO I AM</div>
-            <div class="about-text">
-                Currently an <strong class="highlight-blue">Automation Engineer</strong> at Frost Bank,
-                building test frameworks for payment systems and money movement.
-                Texas State CS grad who likes to make <span class="highlight-yellow">games and fun software</span> on the side.
-            </div>
-            <div class="about-text about-secondary">
-                Also running <a href="https://chumstudios.itch.io/" target="_blank" class="chum-link">Chum Studios.</a><br>Shipping indie games nobody asked for, one demo at a time.
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
+    <!-- Contact -->
     <section class="contact" id="contact">
-        <div class="contact-content">
+        <div class="contact-grid fade-target" id="contact-grid">
             <div>
-                <div class="section-number">04 / GET IN TOUCH</div>
-                <h2 class="contact-title">Say hello</h2>
-                <p class="contact-description">
-                    Got a project, question, or just want to talk games? I'm always down to chat.
-                </p>
+                <div class="eyebrow">Say hi</div>
+                <h2 class="contact-title">Get in touch</h2>
+                <p class="contact-desc">Got a project, a bug, or just want to talk games? I'm around.</p>
             </div>
             <div class="contact-links">
-                <button onclick="copyEmail()" class="contact-button primary" id="email-btn">Copy Email</button>
-                <a href="static/Kody Gentry Resume 2026.pdf" class="contact-button secondary" target="_blank">View Resume</a>
-                <a href="https://github.com/kog-ko" class="contact-button" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/kodygentry/" class="contact-button" target="_blank">LinkedIn</a>
+                <button onclick="copyEmail()" class="btn-copy-email" id="email-btn">Copy Email</button>
+                <a href="https://github.com/kog-ko" class="btn-social" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/kodygentry/" class="btn-social" target="_blank">LinkedIn</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <p class="footer-text">Built by Kody Gentry · 2026</p>
-        </div>
+        <p class="footer-text">Built by Kody Gentry · 2026</p>
     </footer>
 
     <script>
@@ -1689,78 +900,52 @@
                 const btn = document.getElementById('email-btn');
                 const originalText = btn.textContent;
                 btn.textContent = 'Copied!';
-                btn.style.background = 'var(--accent-green)';
-                btn.style.borderColor = 'var(--accent-green)';
-                btn.style.color = 'var(--bg-primary)';
+                btn.classList.add('copied');
                 setTimeout(() => {
                     btn.textContent = originalText;
-                    btn.style.background = 'var(--accent-blue)';
-                    btn.style.borderColor = 'var(--accent-blue)';
-                    btn.style.color = 'var(--bg-primary)';
+                    btn.classList.remove('copied');
                 }, 2000);
             });
         }
 
-        // Smooth scroll
+        // Smooth scroll for in-page anchors
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                if (!href || href.length < 2) return;
+                const target = document.querySelector(href);
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
 
-        // Simple, subtle scroll animations
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -10% 0px'
-        };
-
+        // Scroll-triggered fade-ins
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
 
-        // Observe section headers
-        document.querySelectorAll('.section-header').forEach(el => {
-            observer.observe(el);
+        document.querySelectorAll('.fade-target').forEach(el => observer.observe(el));
+
+        // Project tab filtering
+        const tabButtons = document.querySelectorAll('.tab-pill');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                tabButtons.forEach(b => b.classList.toggle('active', b === btn));
+                projectCards.forEach(card => {
+                    card.classList.toggle('hidden', card.dataset.category !== tab);
+                });
+            });
         });
-
-        // Observe projects with staggered timing
-        const projects = document.querySelectorAll('.project');
-        projects.forEach((project, index) => {
-            project.style.transitionDelay = `${index * 0.1}s`;
-            observer.observe(project);
-        });
-
-        // Observe skills categories
-        document.querySelectorAll('.skill-category').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Observe skills header
-        const skillsHeader = document.querySelector('.skills-header');
-        if (skillsHeader) {
-            observer.observe(skillsHeader);
-        }
-
-        // Observe about section
-        const aboutContent = document.querySelector('.about-content');
-        if (aboutContent) {
-            observer.observe(aboutContent);
-        }
-
-        // Observe contact section
-        const contactContent = document.querySelector('.contact-content');
-        if (contactContent) {
-            observer.observe(contactContent);
-        }
-
     </script>
 </body>
 </html>
