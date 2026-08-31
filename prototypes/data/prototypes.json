@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Example Prototype",
+        "description": "Working on it",
+        "image": "../images/example.png",
+        "video": null,
+        "status": "WIP",
+        "tech": ["Godot", "GDScript", "Pixel Art"],
+        "started": "Dec 2024",
+        "lastUpdate": "Dec 2024"
+    }
+]
